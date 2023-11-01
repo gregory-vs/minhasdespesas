@@ -16,16 +16,24 @@ class DespesaController extends Controller
 
     public function store(Request $request)
     {
-        $despesa = new Despesas;
-        $despesa->descricao = $request->descricao;
-        $despesa->data = $request->data;
-        $depesa->usuario = $request->usuario;
-        $despesa->valor = $request->valor;
-        $despesa->save();
+        if(!empty($request->usuario) && $request->valor > 0 && strtotime($request->data) <= strtotime("now") &&  count($request->descricao) <= 191)
+        {
+            $despesa = new Despesas;
+            $despesa->descricao = $request->descricao;
+            $despesa->data = $request->data;
+            $depesa->usuario = $request->usuario;
+            $despesa->valor = $request->valor;
+            $despesa->save();
 
-        return response()->json([
-            "message" => "Despesa adicionada"
-        ], 201);
+            return response()->json([
+                "message" => "Despesa adicionada"
+            ], 201);
+            }
+        else
+            return response()->json([
+                "message" => "verifique os parametros da sua despesa"
+            ], 500);
+        
 
     }
 
